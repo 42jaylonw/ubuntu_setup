@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "id": "zed",
+  "label": "Zed",
+  "category": "desktop",
+  "description": "GPU-accelerated code editor",
+  "profiles": [
+    "workstation"
+  ],
+  "hidden": false,
+  "platform": {
+    "os": "ubuntu",
+    "min_version": "24.04",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ]
+  },
+  "depends_on": [
+    "bootstrap"
+  ],
+  "detect": {
+    "commands": [
+      "zed"
+    ]
+  },
+  "backend": "vendor",
+  "spec": {
+    "installer_url": "https://zed.dev/install.sh",
+    "interpreter": "sh",
+    "installer_args": [],
+    "adapter": "zed",
+    "ownership_requirement": "Adapter must record installed paths and shell edits before enabling remove; do not infer ownership from PATH."
+  },
+  "lifecycle": {
+    "install": "ensure-present",
+    "update": "existing-only",
+    "remove": "recorded-files",
+    "preserve_user_data": true
+  },
+  "legacy_source": "components/40-desktop.sh"
+}

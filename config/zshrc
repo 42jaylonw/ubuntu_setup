@@ -1,0 +1,41 @@
+# Zsh defaults managed by ubuntu-setup.
+# Put machine-specific settings in ~/.zshrc outside the ubuntu-setup block.
+
+# Keep user-installed tools ahead of system paths without accumulating entries.
+typeset -U path PATH
+path=("$HOME/.local/bin" "$HOME/.pixi/bin" $path)
+export PATH
+
+# Store history in the XDG state directory and share it between sessions.
+_ubuntu_setup_state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/zsh"
+mkdir -p -- "$_ubuntu_setup_state_dir"
+HISTFILE="$_ubuntu_setup_state_dir/history"
+HISTSIZE=10000
+SAVEHIST=10000
+setopt APPEND_HISTORY SHARE_HISTORY HIST_IGNORE_DUPS HIST_IGNORE_SPACE
+setopt AUTO_CD INTERACTIVE_COMMENTS
+
+# Initialize Zsh's completion system once per shell.
+autoload -Uz compinit
+compinit
+
+# Ubuntu packages keep fzf's optional widgets in this directory.
+[[ -r /usr/share/doc/fzf/examples/key-bindings.zsh ]] && source /usr/share/doc/fzf/examples/key-bindings.zsh
+[[ -r /usr/share/doc/fzf/examples/completion.zsh ]] && source /usr/share/doc/fzf/examples/completion.zsh
+
+command -v starship >/dev/null 2>&1 && eval "$(starship init zsh)"
+command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
+command -v pixi >/dev/null 2>&1 && eval "$(pixi completion --shell zsh)"
+command -v uv >/dev/null 2>&1 && eval "$(uv generate-shell-completion zsh)"
+
+unset _ubuntu_setup_state_dir
+
+# Ubuntu-packaged plugins; tolerate packages that have not been installed yet.
+if [[ -r /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
+  source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+fi
+
+# Keep syntax highlighting after completion, tool hooks, and other ZLE widgets.
+if [[ -r /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
+  source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi

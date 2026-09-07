@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "id": "codex",
+  "label": "OpenAI Codex CLI",
+  "category": "ai",
+  "description": "OpenAI coding agent CLI (latest stable)",
+  "profiles": [
+    "workstation"
+  ],
+  "hidden": false,
+  "platform": {
+    "os": "ubuntu",
+    "min_version": "24.04",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ]
+  },
+  "depends_on": [
+    "bootstrap"
+  ],
+  "detect": {
+    "commands": [
+      "codex"
+    ]
+  },
+  "backend": "vendor",
+  "spec": {
+    "installer_url": "https://chatgpt.com/codex/install.sh",
+    "interpreter": "sh",
+    "installer_args": [],
+    "adapter": "codex",
+    "ownership_requirement": "Adapter must record installed paths and shell edits before enabling remove; do not infer ownership from PATH."
+  },
+  "lifecycle": {
+    "install": "ensure-present",
+    "update": "existing-only",
+    "remove": "recorded-files",
+    "preserve_user_data": true
+  },
+  "legacy_source": "components/50-ai.sh"
+}

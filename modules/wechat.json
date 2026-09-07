@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "id": "wechat",
+  "label": "WeChat",
+  "category": "desktop",
+  "description": "Tencent WeChat Linux client (latest stable)",
+  "profiles": [
+    "workstation"
+  ],
+  "hidden": false,
+  "platform": {
+    "os": "ubuntu",
+    "min_version": "24.04",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ]
+  },
+  "depends_on": [
+    "bootstrap"
+  ],
+  "detect": {
+    "commands": [
+      "wechat"
+    ]
+  },
+  "backend": "deb",
+  "spec": {
+    "url": "https://dldir1v6.qq.com/weixin/Universal/Linux/WeChatLinux_{vendor_arch}.deb",
+    "vendor_arch": {
+      "amd64": "x86_64",
+      "arm64": "arm64"
+    }
+  },
+  "lifecycle": {
+    "install": "ensure-present",
+    "update": "existing-only",
+    "remove": "recorded-packages",
+    "preserve_user_data": true
+  },
+  "legacy_source": "components/45-apps.sh"
+}

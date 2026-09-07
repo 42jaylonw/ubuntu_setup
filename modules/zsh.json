@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "id": "zsh",
+  "label": "Zsh",
+  "category": "shell",
+  "description": "Interactive shell",
+  "profiles": [
+    "minimal",
+    "workstation"
+  ],
+  "hidden": false,
+  "platform": {
+    "os": "ubuntu",
+    "min_version": "24.04",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ]
+  },
+  "depends_on": [
+    "bootstrap"
+  ],
+  "detect": {
+    "commands": [
+      "zsh"
+    ]
+  },
+  "backend": "apt",
+  "spec": {
+    "packages": [
+      "zsh"
+    ]
+  },
+  "lifecycle": {
+    "install": "ensure-present",
+    "update": "existing-only",
+    "remove": "recorded-packages",
+    "preserve_user_data": true
+  },
+  "legacy_source": "components/10-shell.sh"
+}

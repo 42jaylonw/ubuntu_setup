@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "id": "eza",
+  "label": "eza / exa",
+  "category": "cli",
+  "description": "Modern directory listing",
+  "profiles": [
+    "workstation"
+  ],
+  "hidden": false,
+  "platform": {
+    "os": "ubuntu",
+    "min_version": "24.04",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ]
+  },
+  "depends_on": [
+    "bootstrap"
+  ],
+  "detect": {
+    "commands": [
+      "eza"
+    ]
+  },
+  "backend": "adapter",
+  "spec": {
+    "adapter": "eza",
+    "apt_candidates": [
+      "eza",
+      "exa"
+    ]
+  },
+  "lifecycle": {
+    "install": "ensure-present",
+    "update": "existing-only",
+    "remove": "recorded-backend",
+    "preserve_user_data": true
+  },
+  "legacy_source": "components/20-cli.sh"
+}

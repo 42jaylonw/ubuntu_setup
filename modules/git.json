@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "id": "git",
+  "label": "Git",
+  "category": "base",
+  "description": "Distributed version control",
+  "profiles": [
+    "minimal",
+    "workstation"
+  ],
+  "hidden": false,
+  "platform": {
+    "os": "ubuntu",
+    "min_version": "24.04",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ]
+  },
+  "depends_on": [
+    "bootstrap"
+  ],
+  "detect": {
+    "commands": [
+      "git"
+    ]
+  },
+  "backend": "apt",
+  "spec": {
+    "packages": [
+      "git"
+    ]
+  },
+  "lifecycle": {
+    "install": "ensure-present",
+    "update": "existing-only",
+    "remove": "recorded-packages",
+    "preserve_user_data": true
+  },
+  "legacy_source": "components/00-base.sh"
+}

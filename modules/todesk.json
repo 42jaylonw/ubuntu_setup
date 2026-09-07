@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "id": "todesk",
+  "label": "ToDesk",
+  "category": "desktop",
+  "description": "ToDesk remote desktop client",
+  "profiles": [
+    "workstation"
+  ],
+  "hidden": false,
+  "platform": {
+    "os": "ubuntu",
+    "min_version": "24.04",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ]
+  },
+  "depends_on": [
+    "bootstrap"
+  ],
+  "detect": {
+    "commands": [
+      "todesk"
+    ]
+  },
+  "backend": "adapter",
+  "spec": {
+    "adapter": "todesk",
+    "page_url": "https://www.todesk.com/linux.html?product=remote&type=individual",
+    "download_host": "dl.todesk.com",
+    "local_deb_env": "TODESK_DEB"
+  },
+  "lifecycle": {
+    "install": "ensure-present",
+    "update": "existing-only",
+    "remove": "recorded-packages",
+    "preserve_user_data": true
+  },
+  "legacy_source": "components/45-apps.sh"
+}

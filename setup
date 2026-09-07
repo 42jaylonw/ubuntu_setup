@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+set -uo pipefail
+
+ROOT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=scripts/lib.sh
+source "$ROOT_DIR/scripts/lib.sh"
+# shellcheck source=scripts/registry.sh
+source "$ROOT_DIR/scripts/registry.sh"
+
+discover_components "$ROOT_DIR/components"
+
+usage() {
+  cat <<'EOF'
+Usage:
+  ./setup                         Open the interactive dashboard (TTY only)
+  ./setup status [component...]
+  ./setup list
+  ./setup install [OPTIONS] [component...]
+  ./setup update [OPTIONS] [component...]
+
+Install/update options:
+  --profile minimal|workstation
+  --category base,shell,cli,build,desktop,ai
+  --dry-run
+  --yes                          Do not ask for confirmation
+EOF
+}
+
+command_name="${1:-}"
+if [[ -z "$command_name" ]]; then
+  if [[ -t 0 && -t 1 ]]; then interactive_dashboard; exit $?; fi
+  usage >&2
+  exit 2
+fi
+shift
+
+case "$command_name" in
+  list) (($# == 0)) || die "list takes no arguments"; list_components ;;
+  status) status_components "$@" ;;
+  install) ASSUME_YES=1; install_cli "$@" ;;
+  update) UPDATE_MODE=1; ASSUME_YES=1; install_cli "$@" ;;
+  -h|--help|help) usage ;;
+  *) die "unknown command: $command_name" ;;
+esac

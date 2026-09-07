@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "id": "fd-link",
+  "label": "fd command alias",
+  "category": "cli",
+  "description": "Expose fdfind as fd in ~/.local/bin",
+  "profiles": [
+    "workstation"
+  ],
+  "hidden": false,
+  "platform": {
+    "os": "ubuntu",
+    "min_version": "24.04",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ]
+  },
+  "depends_on": [
+    "fd"
+  ],
+  "detect": {
+    "commands": [
+      "fd"
+    ]
+  },
+  "backend": "symlink",
+  "spec": {
+    "target_command": "fdfind",
+    "link": "{home}/.local/bin/fd"
+  },
+  "lifecycle": {
+    "install": "ensure-present",
+    "update": "existing-only",
+    "remove": "recorded-files",
+    "preserve_user_data": true
+  },
+  "legacy_source": "components/20-cli.sh"
+}

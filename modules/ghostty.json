@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "id": "ghostty",
+  "label": "Ghostty",
+  "category": "desktop",
+  "description": "GPU-accelerated terminal",
+  "profiles": [
+    "workstation"
+  ],
+  "hidden": false,
+  "platform": {
+    "os": "ubuntu",
+    "min_version": "24.04",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ]
+  },
+  "depends_on": [
+    "bootstrap"
+  ],
+  "detect": {
+    "commands": [
+      "ghostty"
+    ]
+  },
+  "backend": "adapter",
+  "spec": {
+    "adapter": "ghostty",
+    "default_routes": [
+      {
+        "ubuntu_min": "26.04",
+        "backend": "apt",
+        "package": "ghostty"
+      },
+      {
+        "ubuntu_min": "24.04",
+        "backend": "snap",
+        "package": "ghostty",
+        "channel": "stable",
+        "classic": true
+      }
+    ],
+    "method_env": "GHOSTTY_METHOD",
+    "community_installer": {
+      "url": "https://raw.githubusercontent.com/mkasberg/ghostty-ubuntu/HEAD/install.sh",
+      "interpreter": "bash",
+      "opt_in": true
+    }
+  },
+  "lifecycle": {
+    "install": "ensure-present",
+    "update": "existing-only",
+    "remove": "recorded-backend",
+    "preserve_user_data": true
+  },
+  "legacy_source": "components/40-desktop.sh"
+}

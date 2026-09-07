@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "id": "bat-link",
+  "label": "bat command alias",
+  "category": "cli",
+  "description": "Expose batcat as bat in ~/.local/bin",
+  "profiles": [
+    "workstation"
+  ],
+  "hidden": false,
+  "platform": {
+    "os": "ubuntu",
+    "min_version": "24.04",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ]
+  },
+  "depends_on": [
+    "bat"
+  ],
+  "detect": {
+    "commands": [
+      "bat"
+    ]
+  },
+  "backend": "symlink",
+  "spec": {
+    "target_command": "batcat",
+    "link": "{home}/.local/bin/bat"
+  },
+  "lifecycle": {
+    "install": "ensure-present",
+    "update": "existing-only",
+    "remove": "recorded-files",
+    "preserve_user_data": true
+  },
+  "legacy_source": "components/20-cli.sh"
+}

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "tmux",
+  "label": "tmux",
+  "category": "cli",
+  "description": "Terminal multiplexer",
+  "profiles": [
+    "workstation"
+  ],
+  "hidden": false,
+  "platform": {
+    "os": "ubuntu",
+    "min_version": "24.04",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ]
+  },
+  "depends_on": [
+    "bootstrap"
+  ],
+  "detect": {
+    "commands": [
+      "tmux"
+    ]
+  },
+  "backend": "apt",
+  "spec": {
+    "packages": [
+      "tmux"
+    ]
+  },
+  "lifecycle": {
+    "install": "ensure-present",
+    "update": "existing-only",
+    "remove": "recorded-packages",
+    "preserve_user_data": true
+  },
+  "legacy_source": "components/20-cli.sh"
+}

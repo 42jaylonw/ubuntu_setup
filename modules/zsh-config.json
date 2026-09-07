@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "zsh-config",
+  "label": "Managed Zsh configuration",
+  "category": "shell",
+  "description": "History, completion, plugins, PATH, prompt, and tool hooks",
+  "profiles": [
+    "minimal",
+    "workstation"
+  ],
+  "hidden": false,
+  "platform": {
+    "os": "ubuntu",
+    "min_version": "24.04",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ]
+  },
+  "depends_on": [
+    "zsh",
+    "zsh-autosuggestions",
+    "zsh-syntax-highlighting"
+  ],
+  "detect": {
+    "commands": []
+  },
+  "backend": "adapter",
+  "spec": {
+    "adapter": "zsh-config",
+    "asset": "config/zshrc",
+    "destination": "{config_home}/ubuntu-setup/zshrc",
+    "shell_file": "{home}/.zshrc",
+    "block_begin": "# >>> ubuntu-setup >>>",
+    "block_end": "# <<< ubuntu-setup <<<"
+  },
+  "lifecycle": {
+    "install": "ensure-present",
+    "update": "existing-only",
+    "remove": "managed-block-and-file",
+    "preserve_user_data": true
+  },
+  "legacy_source": "components/10-shell.sh"
+}

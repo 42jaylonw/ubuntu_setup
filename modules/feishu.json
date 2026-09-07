@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "id": "feishu",
+  "label": "Feishu",
+  "category": "desktop",
+  "description": "Feishu collaboration client",
+  "profiles": [
+    "workstation"
+  ],
+  "hidden": false,
+  "platform": {
+    "os": "ubuntu",
+    "min_version": "24.04",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ]
+  },
+  "depends_on": [
+    "bootstrap",
+    "jq"
+  ],
+  "detect": {
+    "commands": [
+      "bytedance-feishu-stable"
+    ]
+  },
+  "backend": "adapter",
+  "spec": {
+    "adapter": "feishu",
+    "metadata_url": "https://www.feishu.cn/api/package_info?platform={platform}",
+    "platform": {
+      "amd64": 10,
+      "arm64": 12
+    },
+    "download_field": "data.download_link",
+    "checksum_field": "data.hash"
+  },
+  "lifecycle": {
+    "install": "ensure-present",
+    "update": "existing-only",
+    "remove": "recorded-packages",
+    "preserve_user_data": true
+  },
+  "legacy_source": "components/45-apps.sh"
+}

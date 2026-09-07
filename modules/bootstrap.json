@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "bootstrap",
+  "label": "Bootstrap prerequisites",
+  "category": "base",
+  "description": "Download and package-management prerequisites",
+  "profiles": [],
+  "hidden": true,
+  "platform": {
+    "os": "ubuntu",
+    "min_version": "24.04",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ]
+  },
+  "depends_on": [],
+  "detect": {
+    "commands": [
+      "curl",
+      "wget"
+    ]
+  },
+  "backend": "apt",
+  "spec": {
+    "packages": [
+      "ca-certificates",
+      "curl",
+      "wget",
+      "gnupg",
+      "software-properties-common",
+      "unzip",
+      "zip",
+      "xz-utils"
+    ]
+  },
+  "lifecycle": {
+    "install": "ensure-present",
+    "update": "existing-only",
+    "remove": "recorded-packages",
+    "preserve_user_data": true
+  },
+  "legacy_source": "components/00-base.sh"
+}

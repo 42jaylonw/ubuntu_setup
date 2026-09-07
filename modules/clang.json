@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "clang",
+  "label": "Clang toolchain",
+  "category": "build",
+  "description": "Clang compiler, formatter, and language server",
+  "profiles": [
+    "workstation"
+  ],
+  "hidden": false,
+  "platform": {
+    "os": "ubuntu",
+    "min_version": "24.04",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ]
+  },
+  "depends_on": [
+    "bootstrap"
+  ],
+  "detect": {
+    "commands": [
+      "clang",
+      "clangd",
+      "clang-format"
+    ]
+  },
+  "backend": "apt",
+  "spec": {
+    "packages": [
+      "clang",
+      "clangd",
+      "clang-format"
+    ]
+  },
+  "lifecycle": {
+    "install": "ensure-present",
+    "update": "existing-only",
+    "remove": "recorded-packages",
+    "preserve_user_data": true
+  },
+  "legacy_source": "components/30-build.sh"
+}

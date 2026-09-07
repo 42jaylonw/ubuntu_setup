@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "id": "build-essential",
+  "label": "Build essentials",
+  "category": "build",
+  "description": "Compiler, linker, make, and headers",
+  "profiles": [
+    "workstation"
+  ],
+  "hidden": false,
+  "platform": {
+    "os": "ubuntu",
+    "min_version": "24.04",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ]
+  },
+  "depends_on": [
+    "bootstrap"
+  ],
+  "detect": {
+    "commands": [
+      "gcc",
+      "make"
+    ]
+  },
+  "backend": "apt",
+  "spec": {
+    "packages": [
+      "build-essential",
+      "pkg-config"
+    ]
+  },
+  "lifecycle": {
+    "install": "ensure-present",
+    "update": "existing-only",
+    "remove": "recorded-packages",
+    "preserve_user_data": true
+  },
+  "legacy_source": "components/30-build.sh"
+}

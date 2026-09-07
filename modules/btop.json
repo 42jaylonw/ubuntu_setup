@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "btop",
+  "label": "btop",
+  "category": "cli",
+  "description": "System resource monitor",
+  "profiles": [
+    "workstation"
+  ],
+  "hidden": false,
+  "platform": {
+    "os": "ubuntu",
+    "min_version": "24.04",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ]
+  },
+  "depends_on": [
+    "bootstrap"
+  ],
+  "detect": {
+    "commands": [
+      "btop"
+    ]
+  },
+  "backend": "apt",
+  "spec": {
+    "packages": [
+      "btop"
+    ]
+  },
+  "lifecycle": {
+    "install": "ensure-present",
+    "update": "existing-only",
+    "remove": "recorded-packages",
+    "preserve_user_data": true
+  },
+  "legacy_source": "components/20-cli.sh"
+}

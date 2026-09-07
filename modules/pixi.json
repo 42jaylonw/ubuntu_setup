@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "id": "pixi",
+  "label": "Pixi",
+  "category": "ai",
+  "description": "Reproducible Python/Conda environments",
+  "profiles": [
+    "workstation"
+  ],
+  "hidden": false,
+  "platform": {
+    "os": "ubuntu",
+    "min_version": "24.04",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ]
+  },
+  "depends_on": [
+    "bootstrap"
+  ],
+  "detect": {
+    "commands": [
+      "pixi"
+    ]
+  },
+  "backend": "vendor",
+  "spec": {
+    "installer_url": "https://pixi.sh/install.sh",
+    "interpreter": "sh",
+    "installer_args": [],
+    "update_argv": [
+      "pixi",
+      "self-update"
+    ],
+    "adapter": "pixi",
+    "ownership_requirement": "Adapter must record installed paths and shell edits before enabling remove; do not infer ownership from PATH."
+  },
+  "lifecycle": {
+    "install": "ensure-present",
+    "update": "existing-only",
+    "remove": "recorded-files",
+    "preserve_user_data": true
+  },
+  "legacy_source": "components/50-ai.sh"
+}

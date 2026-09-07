@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "id": "yq",
+  "label": "yq",
+  "category": "cli",
+  "description": "YAML processor",
+  "profiles": [
+    "workstation"
+  ],
+  "hidden": false,
+  "platform": {
+    "os": "ubuntu",
+    "min_version": "24.04",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ]
+  },
+  "depends_on": [
+    "bootstrap"
+  ],
+  "detect": {
+    "commands": [
+      "yq"
+    ]
+  },
+  "backend": "adapter",
+  "spec": {
+    "adapter": "yq",
+    "apt_candidates": [
+      "yq"
+    ],
+    "fallback": {
+      "version": "v4.53.6",
+      "url": "https://github.com/mikefarah/yq/releases/download/{version}/yq_linux_{arch}",
+      "destination": "/usr/local/bin/yq",
+      "sha256": {
+        "amd64": "c5f056448f973ae7d39b5401949648a78f2dc1947d6a8eb65be60d5c504b9385",
+        "arm64": "88a1016bc1d657375a35864e4f44b6f333df8ff97b559f51bba0adcb2169df09"
+      }
+    }
+  },
+  "lifecycle": {
+    "install": "ensure-present",
+    "update": "existing-only",
+    "remove": "recorded-backend",
+    "preserve_user_data": true
+  },
+  "legacy_source": "components/20-cli.sh"
+}

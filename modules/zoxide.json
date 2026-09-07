@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "id": "zoxide",
+  "label": "zoxide",
+  "category": "shell",
+  "description": "Smarter directory navigation",
+  "profiles": [
+    "workstation"
+  ],
+  "hidden": false,
+  "platform": {
+    "os": "ubuntu",
+    "min_version": "24.04",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ]
+  },
+  "depends_on": [
+    "bootstrap"
+  ],
+  "detect": {
+    "commands": [
+      "zoxide"
+    ]
+  },
+  "backend": "vendor",
+  "spec": {
+    "installer_url": "https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh",
+    "interpreter": "sh",
+    "installer_args": [],
+    "adapter": "zoxide",
+    "ownership_requirement": "Adapter must record installed paths and shell edits before enabling remove; do not infer ownership from PATH."
+  },
+  "lifecycle": {
+    "install": "ensure-present",
+    "update": "existing-only",
+    "remove": "recorded-files",
+    "preserve_user_data": true
+  },
+  "legacy_source": "components/10-shell.sh"
+}

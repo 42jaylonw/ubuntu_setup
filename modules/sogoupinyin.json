@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "id": "sogoupinyin",
+  "label": "Sogou Pinyin",
+  "category": "desktop",
+  "description": "Sogou Chinese input method with Fcitx 4",
+  "profiles": [
+    "workstation"
+  ],
+  "hidden": false,
+  "platform": {
+    "os": "ubuntu",
+    "min_version": "24.04",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ]
+  },
+  "depends_on": [
+    "bootstrap"
+  ],
+  "detect": {
+    "commands": []
+  },
+  "backend": "adapter",
+  "spec": {
+    "adapter": "sogoupinyin",
+    "guide_url": "https://shurufa.sogou.com/linux/guide",
+    "download_page": "https://shurufa.sogou.com/linux",
+    "download_host": "ime-sec.gtimg.com",
+    "package": "sogoupinyin",
+    "local_deb_env": "SOGOU_DEB",
+    "runtime_packages": [
+      "fcitx",
+      "fcitx-config-gtk",
+      "fcitx-frontend-gtk3",
+      "fcitx-frontend-qt5",
+      "im-config",
+      "libqt5qml5",
+      "libqt5quick5",
+      "libqt5quickwidgets5",
+      "qml-module-qtquick2",
+      "libgsettings-qt1"
+    ],
+    "configure_argv": [
+      "im-config",
+      "-n",
+      "fcitx"
+    ],
+    "logout_required": true,
+    "removal_note": "Record previous im-config selection; restore it only if unchanged since installation. Remove only owned packages and preserve user dictionaries."
+  },
+  "lifecycle": {
+    "install": "ensure-present",
+    "update": "existing-only",
+    "remove": "recorded-packages",
+    "preserve_user_data": true
+  },
+  "legacy_source": "components/42-input.sh"
+}

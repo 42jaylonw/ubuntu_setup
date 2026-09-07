@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "id": "zsh-autosuggestions",
+  "label": "Zsh autosuggestions",
+  "category": "shell",
+  "description": "Suggest commands from shell history",
+  "profiles": [
+    "minimal",
+    "workstation"
+  ],
+  "hidden": false,
+  "platform": {
+    "os": "ubuntu",
+    "min_version": "24.04",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ]
+  },
+  "depends_on": [
+    "zsh"
+  ],
+  "detect": {
+    "commands": []
+  },
+  "backend": "apt",
+  "spec": {
+    "packages": [
+      "zsh-autosuggestions"
+    ]
+  },
+  "lifecycle": {
+    "install": "ensure-present",
+    "update": "existing-only",
+    "remove": "recorded-packages",
+    "preserve_user_data": true
+  },
+  "legacy_source": "components/10-shell.sh"
+}

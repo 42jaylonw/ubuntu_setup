@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "id": "vscode",
+  "label": "Visual Studio Code",
+  "category": "desktop",
+  "description": "Microsoft code editor (latest stable)",
+  "profiles": [
+    "workstation"
+  ],
+  "hidden": false,
+  "platform": {
+    "os": "ubuntu",
+    "min_version": "24.04",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ]
+  },
+  "depends_on": [
+    "bootstrap"
+  ],
+  "detect": {
+    "commands": [
+      "code"
+    ]
+  },
+  "backend": "adapter",
+  "spec": {
+    "adapter": "vscode",
+    "url": "https://update.code.visualstudio.com/latest/{vendor_arch}/stable",
+    "vendor_arch": {
+      "amd64": "linux-deb-x64",
+      "arm64": "linux-deb-arm64"
+    },
+    "debconf": {
+      "package": "code",
+      "question": "code/add-microsoft-repo",
+      "type": "boolean",
+      "value": "true"
+    }
+  },
+  "lifecycle": {
+    "install": "ensure-present",
+    "update": "existing-only",
+    "remove": "recorded-packages",
+    "preserve_user_data": true
+  },
+  "legacy_source": "components/45-apps.sh"
+}
