@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Ghostty background instance
+Exec=sh -c "exec \\"\\$HOME/.local/bin/ghostty-new-window\\" --gtk-single-instance=true --initial-window=false"
+Terminal=false
+X-GNOME-Autostart-enabled=true

@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+# Prefer D-Bus; older builds or incomplete package integration can fall back.
+if command -v ghostty >/dev/null 2>&1; then
+  ghostty_bin=ghostty
+elif [ -x /snap/bin/ghostty ]; then
+  ghostty_bin=/snap/bin/ghostty
+else
+  printf '%s\n' 'Ghostty is not installed' >&2
+  exit 127
+fi
+if [ "$#" -gt 0 ]; then
+  exec "$ghostty_bin" "$@"
+fi
+"$ghostty_bin" +new-window 2>/dev/null && exit 0
+exec "$ghostty_bin" --gtk-single-instance=true

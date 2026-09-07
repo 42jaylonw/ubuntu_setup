@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Ghostty
+Comment=Terminal emulator
+Exec=sh -c "exec \\"\\$HOME/.local/bin/ghostty-new-window\\""
+Icon=com.mitchellh.ghostty
+Terminal=false
+Categories=System;TerminalEmulator;
+StartupWMClass=com.mitchellh.ghostty

@@ -72,13 +72,28 @@ See the [module catalog](modules/README.md) for configuration details and the
 
 ## Installation notes
 
-- **Ghostty:** uses APT on Ubuntu 26.04+, otherwise Snap.
+- **Ghostty:** uses APT on Ubuntu 26.04+, otherwise Snap. Installing Ghostty
+  automatically includes `ghostty-config` and the managed Zsh configuration.
+  Desktop launches use `ghostty +new-window` over D-Bus (with a fallback for
+  older/incompletely integrated packages). Ghostty starts without a window at
+  graphical login and stays running after the last window closes. Personal
+  Ghostty settings are preserved outside a managed config block.
+  Zsh reuses an already initialized completion system and caches Pixi/uv
+  completions under `${XDG_CACHE_HOME:-~/.cache}/ubuntu-setup/zsh`, refreshing
+  them when the tool binary changes. Delete that directory to force regeneration.
+  See [Ghostty's D-Bus documentation](https://ghostty.org/docs/linux/systemd).
+
 - **Sogou Pinyin:** uses Fcitx 4. After logging back in, add Sogou through
   `fcitx-configtool` if needed. Desktop compatibility on Ubuntu 24.04+ still needs
   validation.
 - **Blocked downloads:** ToDesk and Sogou accept local packages through
   `TODESK_DEB=/path/to/package.deb` or `SOGOU_DEB=/path/to/package.deb` before
   `./setup install todesk` or `./setup install sogoupinyin`, respectively.
+
+To apply these settings to an existing installation, run
+`./setup install ghostty --yes`, then restart Ghostty and open a new Zsh shell.
+Use `~/.local/bin/ghostty-new-window` for custom terminal keyboard shortcuts.
+Login autostart takes effect at the next graphical login.
 
 ## Development
 

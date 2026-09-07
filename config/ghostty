@@ -1,0 +1,3 @@
+# Reuse the GTK instance and retain it after closing the last window.
+gtk-single-instance = true
+quit-after-last-window-closed = false

@@ -16,8 +16,10 @@ setopt APPEND_HISTORY SHARE_HISTORY HIST_IGNORE_DUPS HIST_IGNORE_SPACE
 setopt AUTO_CD INTERACTIVE_COMMENTS
 
 # Initialize Zsh's completion system once per shell.
-autoload -Uz compinit
-compinit
+if (( ! $+functions[compdef] )); then
+  autoload -Uz compinit
+  compinit
+fi
 
 # Ubuntu packages keep fzf's optional widgets in this directory.
 [[ -r /usr/share/doc/fzf/examples/key-bindings.zsh ]] && source /usr/share/doc/fzf/examples/key-bindings.zsh
@@ -25,8 +27,32 @@ compinit
 
 command -v starship >/dev/null 2>&1 && eval "$(starship init zsh)"
 command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
-command -v pixi >/dev/null 2>&1 && eval "$(pixi completion --shell zsh)"
-command -v uv >/dev/null 2>&1 && eval "$(uv generate-shell-completion zsh)"
+# Cache generated scripts; binary path/metadata changes invalidate the cache
+# without launching either tool merely to ask for its version.
+_ubuntu_setup_completion() {
+  local tool="$1" executable="${commands[$1]}" cache_dir cache key old_key tmp
+  shift
+  [[ -n "$executable" ]] || return 0
+  cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/ubuntu-setup/zsh"
+  (umask 077; mkdir -p -- "$cache_dir") || return 0
+  cache="$cache_dir/$tool.zsh"
+  key="$executable:$(stat -Lc '%d:%i:%s:%y:%z' -- "$executable" 2>/dev/null)"
+  [[ -r "$cache.key" ]] && old_key="$(<"$cache.key")"
+  if [[ ! -s "$cache" || "$key" != "$old_key" ]]; then
+    tmp="$(mktemp "$cache.XXXXXXXX")" || return 0
+    if "$executable" "$@" >"$tmp" && [[ -s "$tmp" ]]; then
+      mv -f -- "$tmp" "$cache"
+      print -r -- "$key" >"$cache.key"
+    else
+      rm -f -- "$tmp"
+    fi
+  fi
+  [[ -s "$cache" ]] && source "$cache"
+  return 0
+}
+_ubuntu_setup_completion pixi completion --shell zsh
+_ubuntu_setup_completion uv generate-shell-completion zsh
+unfunction _ubuntu_setup_completion
 
 unset _ubuntu_setup_state_dir
 

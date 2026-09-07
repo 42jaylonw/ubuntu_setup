@@ -17,4 +17,4 @@ component_ghostty() {
 
 register_component chrome label='Google Chrome' category=desktop description='Web browser' profiles=workstation probes=google-chrome type=deb deps=bootstrap privilege=yes arches=amd64 installer=https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 register_component zed label='Zed' category=desktop description='GPU-accelerated code editor' profiles=workstation probes=zed type=remote deps=bootstrap installer=https://zed.dev/install.sh
-register_component ghostty label='Ghostty' category=desktop description='GPU-accelerated terminal' profiles=workstation probes=ghostty type=custom deps=bootstrap privilege=yes installer=component_ghostty
+register_component ghostty label='Ghostty' category=desktop description='GPU-accelerated terminal' profiles=workstation probes=ghostty type=custom deps='bootstrap ghostty-config' privilege=yes installer=component_ghostty

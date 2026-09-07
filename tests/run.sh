@@ -81,6 +81,63 @@ check 'stale managed Zsh asset is detected' test "$(component_status zsh-config)
 component_zsh_config
 check 'managed Zsh asset refreshes cleanly' component_zsh_config_status
 
+# Configuration remains installable even when Ghostty itself is already present.
+REQUESTED=(ghostty); build_plan
+check 'Ghostty includes startup and shell configuration' contains " ${PLAN[*]} " ' zsh-config ghostty-config ghostty '
+component_ghostty_config
+printf 'font-size = 14\n' >>"$HOME/.config/ghostty/config"
+component_ghostty_config
+check 'Ghostty preserves personal settings' grep -Fxq 'font-size = 14' "$HOME/.config/ghostty/config"
+check 'Ghostty config block is not duplicated' test "$(grep -Fc '# >>> ubuntu-setup >>>' "$HOME/.config/ghostty/config")" -eq 1
+check 'Ghostty config status verifies assets' component_ghostty_config_status
+printf '# stale\n' >>"$HOME/.local/bin/ghostty-new-window"
+check 'Ghostty detects stale launcher' test "$(component_status ghostty-config)" = missing
+component_ghostty_config
+
+launcher_result="$(
+  ghostty() { printf '%s\n' "$*"; [[ "${LAUNCHER_FALLBACK:-0}" == 0 || "$1" != +new-window ]]; }
+  export -f ghostty
+  bash "$ROOT/config/ghostty-new-window"
+)"
+check 'Ghostty launcher uses D-Bus first' test "$launcher_result" = '+new-window'
+launcher_result="$(
+  ghostty() { printf '%s\n' "$*"; [[ "$1" != +new-window ]]; }
+  export -f ghostty
+  # exec needs an executable for the fallback.
+  printf '#!/bin/sh\nprintf "fallback:%%s\\n" "$*"\n' >"$tmp/bin/ghostty"
+  chmod +x "$tmp/bin/ghostty"
+  PATH="$tmp/bin:$PATH" bash "$ROOT/config/ghostty-new-window"
+)"
+check 'Ghostty launcher falls back when D-Bus fails' contains "$launcher_result" 'fallback:--gtk-single-instance=true'
+if command -v desktop-file-validate >/dev/null 2>&1; then
+  check 'Ghostty desktop entries are valid' desktop-file-validate "$ROOT/config/ghostty.desktop" "$ROOT/config/ghostty-autostart.desktop"
+fi
+
+if command -v zsh >/dev/null 2>&1; then
+  mkdir -p "$tmp/completion-bin"
+  for tool in pixi uv; do
+    cat >"$tmp/completion-bin/$tool" <<'EOF'
+#!/bin/sh
+printf '%s\n' "$0" >>"$COMPLETION_LOG"
+printf 'typeset -g completion_fixture_loaded=1\n'
+EOF
+    chmod +x "$tmp/completion-bin/$tool"
+  done
+  # Avoid unrelated prompt/tool hooks and exercise completion initialization once.
+  completion_fixture="$tmp/completion-fixture.zsh"
+  sed '/command -v starship /d; /command -v zoxide /d' "$ROOT/config/zshrc" >"$completion_fixture"
+  for run_index in 1 2; do
+    HOME="$tmp/completion-home" XDG_CACHE_HOME="$tmp/completion-cache" PATH="$tmp/completion-bin:/usr/bin:/bin" COMPLETION_LOG="$tmp/completion.log" \
+      zsh -f -c 'function compdef() { :; }; function compinit() { return 99; }; source "$1"; [[ $completion_fixture_loaded == 1 ]]' _ "$completion_fixture"
+    check "cached completions load on shell $run_index" test "$?" -eq 0
+  done
+  check 'Pixi and uv generators run only once across shells' test "$(wc -l <"$tmp/completion.log")" -eq 2
+  printf '# upgraded binary\n' >>"$tmp/completion-bin/pixi"
+  HOME="$tmp/completion-home" XDG_CACHE_HOME="$tmp/completion-cache" PATH="$tmp/completion-bin:/usr/bin:/bin" COMPLETION_LOG="$tmp/completion.log" \
+    zsh -f -c 'source "$1"' _ "$completion_fixture"
+  check 'binary changes regenerate only that completion' test "$(wc -l <"$tmp/completion.log")" -eq 3
+fi
+
 wrapper="$(HOME="$tmp/home" OS_RELEASE_FILE="$tmp/os-release" SETUP_ARCH=amd64 "$ROOT/install.sh" --only base --dry-run 2>&1)"
 check 'compatibility wrapper translates --only' contains "$wrapper" 'OpenSSH client'
 check 'compatibility wrapper limits category' not_contains "$wrapper" 'Google Chrome'

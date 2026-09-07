@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "id": "ghostty-config",
+  "label": "Ghostty startup configuration",
+  "category": "desktop",
+  "description": "D-Bus windows, persistent instance, and login autostart",
+  "profiles": [
+    "workstation"
+  ],
+  "hidden": false,
+  "platform": {
+    "os": "ubuntu",
+    "min_version": "24.04",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ]
+  },
+  "depends_on": [
+    "zsh-config"
+  ],
+  "detect": {
+    "commands": []
+  },
+  "backend": "adapter",
+  "spec": {
+    "adapter": "ghostty-config",
+    "assets": [
+      "config/ghostty",
+      "config/ghostty-new-window",
+      "config/ghostty.desktop",
+      "config/ghostty-autostart.desktop"
+    ]
+  },
+  "lifecycle": {
+    "install": "ensure-present",
+    "update": "existing-only",
+    "remove": "managed-block-and-file",
+    "preserve_user_data": true
+  },
+  "legacy_source": "components/41-ghostty-config.sh"
+}

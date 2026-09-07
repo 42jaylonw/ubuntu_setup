@@ -17,7 +17,8 @@
     ]
   },
   "depends_on": [
-    "bootstrap"
+    "bootstrap",
+    "ghostty-config"
   ],
   "detect": {
     "commands": [
